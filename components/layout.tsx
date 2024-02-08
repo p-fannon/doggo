@@ -1,7 +1,4 @@
-import React from 'react'
-
-//@ts-ignore
-export default function Layout({ children }) {
+export default function Layout({ children }: { children: React.ReactNode }) {
     return (
         <main>{children}</main>
     )
