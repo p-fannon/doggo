@@ -1,5 +1,5 @@
 export default function Layout({ children }: { children: React.ReactNode }) {
     return (
-        <main>{children}</main>
+        <main className="flex min-h-screen flex-col items-center justify-between">{children}</main>
     )
 }
