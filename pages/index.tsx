@@ -3,7 +3,7 @@ import Layout from '../components/layout'
 import type { NextPageWithLayout } from './_app'
 
 const HomePage: NextPageWithLayout = () => {
-    return <h2 className={`mb-3 text-2xl font-semibold`}>Hello, world!</h2>
+    return <p className={`my-3 text-2xl font-semibold`}>Hello, world!</p>
 }
 
 HomePage.getLayout = function getLayout(page: ReactElement) {
