@@ -6,7 +6,7 @@ export const handler = async (event) => {
         if (status == 'success') {
             const imageUrl = message;
             const response = await fetch(imageUrl);
-            const imageBuffer = await response.buffer();
+            const imageBuffer = await response.arrayBuffer();
             const imageUrlSplit = imageUrl.split('/');
             let breed = '';
             if (imageUrlSplit.length > 5) {

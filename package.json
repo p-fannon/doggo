@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "install-all": "npm install && cd lambda/DoggoFetchRandomImage && npm install",
+    "postinstall": "cd lambda/DoggoFetchRandomImage && npm install"
   },
   "dependencies": {
     "react": "^18",
