@@ -25,8 +25,8 @@ const getBreedName = (message) => {
 export const handler = async (event) => {
     try {
         let lambdaResponse = {};
-        let responseUrl = '';
         let breed = '';
+        let responseUrl = '';
         await fetch('https://dog.ceo/api/breeds/image/random').then(async (res) => {
             if (res.status == 200) {
                 return res.json();
@@ -39,26 +39,24 @@ export const handler = async (event) => {
         }).then(async (imageUrl) => {
             await fetch(imageUrl).then(async (apiRes) => {
                 if (apiRes.status == 200) {
-                    return apiRes;
+                    breed = getBreedName(responseUrl);
+
+                    await apiRes.arrayBuffer().then((buffer) => {
+                        lambdaResponse = {
+                            statusCode: 200,
+                            headers: {
+                                'Content-Type': 'image/jpeg'
+                            },
+                            body: buffer.toString('base64'),
+                            isBase64Encoded: true,
+                            breed,
+                        };
+                    });
                 } else {
                     throw new Error(`Dog.CEO did not return JPEG file from URL ${imageUrl}`);
                 }
             });
-        }).then((data) => {
-            breed = getBreedName(responseUrl);
-            return data.arrayBuffer();
-        }).then((buffer) => {
-            lambdaResponse = {
-                statusCode: 200,
-                headers: {
-                    'Content-Type': 'image/jpeg'
-                },
-                body: buffer.toString('base64'),
-                isBase64Encoded: true,
-                breed,
-            };
         });
-
         return lambdaResponse;
     } catch (error) {
         console.error('Error fetching image:', error);
