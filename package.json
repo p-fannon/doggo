@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "next lint",
     "install-all": "npm install && cd lambda/DoggoFetchRandomImage && npm install",
-    "postinstall": "cd lambda/DoggoFetchRandomImage && npm install"
+    "postinstall": "cd lambda/DoggoFetchRandomImage && npm install",
+    "generate-zip": "cd lambda/DoggoFetchRandomImage && zip -r doggo-fetch-random-image.zip ."
   },
   "dependencies": {
     "react": "^18",
