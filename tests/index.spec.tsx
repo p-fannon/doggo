@@ -1,13 +1,12 @@
 import HomePage from "../pages/index";
 import { describe, it } from '@jest/globals'
-import renderer from 'react-test-renderer'
+import { render, screen } from '@testing-library/react'
+import '@testing-library/jest-dom'
 
 describe('HomePage', () => {
     it('renders successfully', () => {
-        const component = renderer.create(
-            <HomePage />
-        )
-        let tree = component.toJSON()
-        expect(tree).toMatchSnapshot()
+        const { container } = render(<HomePage />)
+        expect(container).toMatchSnapshot()
+        expect(screen.getByRole('button')).toHaveTextContent('Fetch')
     })
 })
