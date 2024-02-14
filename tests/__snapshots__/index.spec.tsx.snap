@@ -6,7 +6,7 @@ exports[`HomePage renders successfully 1`] = `
     class="flex flex-col mt-6 justify-center items-center"
   >
     <button
-      class="chakra-button css-4xx2wk"
+      class="chakra-button font-body css-4xx2wk"
       type="button"
     >
       Fetch
