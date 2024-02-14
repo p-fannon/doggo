@@ -1,10 +1,10 @@
 import type { ReactElement } from 'react'
 import Layout from '../components/Layout'
 import type { NextPageWithLayout } from './_app'
-import { Text } from '@chakra-ui/react'
+import FetchButton from '@/components/FetchButton'
 
 const HomePage: NextPageWithLayout = () => {
-    return <Text className="my-3 text-base font-serif">Hello, world!</Text>
+    return <div className="flex flex-col mt-6 justify-center items-center"><FetchButton /></div>
 }
 
 HomePage.getLayout = function getLayout(page: ReactElement) {
