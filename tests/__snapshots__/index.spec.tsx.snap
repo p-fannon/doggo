@@ -4,14 +4,6 @@ exports[`HomePage renders successfully 1`] = `
 <div
   className="flex flex-col mt-6 justify-center items-center"
 >
-  <style
-    dangerouslySetInnerHTML={
-      {
-        "__html": ".css-4xx2wk{display:-webkit-inline-box;display:-webkit-inline-flex;display:-ms-inline-flexbox;display:inline-flex;-webkit-appearance:none;-moz-appearance:none;-ms-appearance:none;appearance:none;-webkit-align-items:center;-webkit-box-align:center;-ms-flex-align:center;align-items:center;-webkit-box-pack:center;-ms-flex-pack:center;-webkit-justify-content:center;justify-content:center;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;position:relative;white-space:nowrap;vertical-align:middle;outline:2px solid transparent;outline-offset:2px;}",
-      }
-    }
-    data-emotion="css 4xx2wk"
-  />
   <button
     className="chakra-button css-4xx2wk"
     type="button"
