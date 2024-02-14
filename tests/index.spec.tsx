@@ -6,7 +6,10 @@ import '@testing-library/jest-dom'
 describe('HomePage', () => {
     it('renders successfully', () => {
         const { container } = render(<HomePage />)
+
         expect(container).toMatchSnapshot()
-        expect(screen.getByRole('button')).toHaveTextContent('Fetch')
+        const fetchButton = screen.getByRole('button')
+        expect(fetchButton).toBeInTheDocument();
+        expect(fetchButton).toHaveTextContent('Fetch')
     })
 })
