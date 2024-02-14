@@ -27,13 +27,13 @@ export const handler = async (event) => {
         let lambdaResponse = {};
         let breed = '';
         let responseUrl = '';
-        await fetch('https://dog.ceo/api/breeds/image/random').then(async (res) => {
+        await fetch('https://dog.ceo/api/breeds/image/random').then((res) => {
             if (res.status == 200) {
                 return res.json();
             }  else {
                 throw new Error('Dog.CEO could not fetch URL for random dog image');
             }
-        }).then(async (dogJson) => {
+        }).then((dogJson) => {
             responseUrl = dogJson.message;
             return dogJson.message;
         }).then(async (imageUrl) => {
