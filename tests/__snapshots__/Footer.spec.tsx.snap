@@ -1,0 +1,15 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Footer renders successfully 1`] = `
+<div>
+  <footer
+    class="flex flex-nowrap justify-end justify-self-end min-w-full pr-2 py-1 border-t-2 border-slate-200 dark:border-slate-500 z-50"
+  >
+    <p
+      class="chakra-text text-xs font-footer css-0"
+    >
+      ⚡ Powered by Dog.CEO & AWS
+    </p>
+  </footer>
+</div>
+`;

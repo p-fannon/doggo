@@ -1,5 +1,4 @@
-import HomePage from "../pages/index";
-import { describe, it } from '@jest/globals'
+import HomePage from '../pages/index';
 import { render, screen } from '@testing-library/react'
 import '@testing-library/jest-dom'
 
@@ -9,7 +8,7 @@ describe('HomePage', () => {
 
         expect(container).toMatchSnapshot()
         const fetchButton = screen.getByRole('button')
-        expect(fetchButton).toBeInTheDocument();
+        expect(fetchButton).toBeInTheDocument()
         expect(fetchButton).toHaveTextContent('Fetch')
     })
 })
