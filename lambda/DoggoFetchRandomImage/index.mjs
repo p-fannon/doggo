@@ -45,7 +45,10 @@ export const handler = async (event) => {
                         lambdaResponse = {
                             statusCode: 200,
                             headers: {
-                                'Content-Type': 'image/jpeg'
+                                'Content-Type': 'image/jpeg',
+                                'Access-Control-Allow-Origin': '*',
+                                'Access-Control-Allow-Methods': 'GET',
+                                'Access-Control-Allow-Headers' : 'Content-Type',
                             },
                             body: buffer.toString('base64'),
                             isBase64Encoded: true,

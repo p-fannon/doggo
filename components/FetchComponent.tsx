@@ -3,6 +3,7 @@ import axios from 'axios'
 import FetchButton from './FetchButton'
 import { Text } from '@chakra-ui/react'
 import Image from 'next/image'
+import FetchImage from './FetchImage'
 
 type DoggoRandomImageResponse = {
     statusCode: number;
@@ -22,7 +23,7 @@ export default function FetchComponent() {
         setIsLoading(true)
         setError('')
         try {
-            await axios.get(`https://${process.env.NEXT_PUBLIC_API_GATEWAY_DOMAIN}/DoggoFetchRandomImage`)
+            await axios.get(`https://${process.env.NEXT_PUBLIC_API_GATEWAY_DOMAIN}/FetchRandomDog`)
             .then((res) => res.data)
             .then((apiResponse: DoggoRandomImageResponse) => {
                 setImageData(apiResponse.body)
@@ -39,10 +40,7 @@ export default function FetchComponent() {
             <div className="font-body">
                 {error && <Text className='text-red-600'>{error}</Text>}
                 {breed && <Text>{`A wild ${breed} appeared!`}</Text>}
-                {imageData && <Image 
-                    src={`data:image/jpeg;base64,${imageData}`}
-                    alt={breed ? breed : 'No image data available'}
-                />}
+                {imageData && <FetchImage imageData={imageData} breed={breed} />}
             </div>
         </>
     )
