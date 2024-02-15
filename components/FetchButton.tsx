@@ -1,7 +1,19 @@
 import { Button } from "@chakra-ui/react";
 
-export default function FetchButton() {
+type FetchButtonType = {
+    onClick: () => void,
+    isLoading: boolean
+}
+
+export default function FetchButton({ onClick, isLoading} : FetchButtonType) {
     return (
-        <Button size="lg" className="font-body">Fetch</Button>
+        <Button 
+            onClick={onClick}
+            isLoading={isLoading}
+            size="lg"
+            className="font-body"
+        >
+            Fetch
+        </Button>
     )
 }
