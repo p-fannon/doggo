@@ -53,19 +53,10 @@ export const handler = async (event) => {
             });
             const fileType = await fileTypeFromBuffer(dogBuffer);
             if (fileType.ext) {
-                const outputFileName = `/tmp/${randomFilename}.${fileType.ext}`;
-                fs.createWriteStream(outputFileName).write(dogBuffer);
-            } else {
-                throw new Error('Could not determine an appropriate file type')
-            }
-
-            fs.readFile(`/tmp/${randomFilename}.${fileType.ext}`, async (err, data) => {
-                if (err) throw new Error('Error reading newly fetched dog picture');
-                
                 const params = {
                     Bucket: bucketName,
-                    Key: `${randomFilename}.jpg`,
-                    Body: data,
+                    Key: `${randomFilename}.${fileType.ext}`,
+                    Body: dogBuffer,
                     ContentType: response.headers['content-type'],
                     ContentLength: response.headers['content-length']
                 };
@@ -82,7 +73,9 @@ export const handler = async (event) => {
                     body: JSON.stringify({ breed, randomDogUrl: `${uploadPromise.Location}` }),
                     isBase64Encoded: false,
                 };
-            });
+            } else {
+                throw new Error('Could not determine an appropriate file type')
+            }
         });
 
         return lambdaResponse;
