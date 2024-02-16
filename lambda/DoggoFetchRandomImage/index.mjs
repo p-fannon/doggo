@@ -46,7 +46,7 @@ export const handler = async (event) => {
 
             breed = getBreedName(imageJson.message);
 
-            const file = createWriteStream(`${randomFilename}.jpg`);
+            const file = createWriteStream(`/tmp/${randomFilename}.jpg`);
             const dogBuffer = await response.arrayBuffer().then((buffer) => {
                 const data = new Uint8Array(buffer);
                 return data;
