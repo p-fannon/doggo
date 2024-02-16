@@ -1,7 +1,9 @@
 import fetch from 'node-fetch';
-import { S3 } from 'aws-sdk';
+import { PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
 import { createWriteStream } from 'node:fs';
 import { randomUUID } from 'node:crypto';
+
+const client = new S3Client({});
 
 const getBreedName = (message) => {
     let breed = '';
@@ -56,16 +58,16 @@ export const handler = async (event) => {
                 ContentLength: response.headers['content-length']
             };
 
-            const uploadPromise = S3.upload(params).promise();
+            const command = new PutObjectCommand(params);
 
-            const data = await uploadPromise;
+            const uploadPromise = await client.send(command);
 
             lambdaResponse = {
                 statusCode: 200,
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ breed, randomDogUrl: `${data.Location}` }),
+                body: JSON.stringify({ breed, randomDogUrl: `${uploadPromise.Location}` }),
                 isBase64Encoded: false,
             };
         });
