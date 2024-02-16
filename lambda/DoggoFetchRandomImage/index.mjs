@@ -1,4 +1,7 @@
 import fetch from 'node-fetch';
+import { S3 } from 'aws-sdk';
+import { createWriteStream } from 'node:fs';
+import { randomUUID } from 'node:crypto';
 
 const getBreedName = (message) => {
     let breed = '';
@@ -26,40 +29,47 @@ export const handler = async (event) => {
     try {
         let lambdaResponse = {};
         let breed = '';
-        let responseUrl = '';
-        await fetch('https://dog.ceo/api/breeds/image/random').then((res) => {
-            if (res.status == 200) {
-                return res.json();
-            }  else {
-                throw new Error('Dog.CEO could not fetch URL for random dog image');
-            }
-        }).then((dogJson) => {
-            responseUrl = dogJson.message;
-            return dogJson.message;
-        }).then(async (imageUrl) => {
-            await fetch(imageUrl).then(async (apiRes) => {
-                if (apiRes.status == 200) {
-                    breed = getBreedName(responseUrl);
+        const bucketName = event.bucketName;
+        if (!bucketName) throw new Error(`event passed unexpected bucketname ${bucketName}`);
+        const randomFilename = randomUUID().toString();
 
-                    await apiRes.arrayBuffer().then((buffer) => {
-                        lambdaResponse = {
-                            statusCode: 200,
-                            headers: {
-                                'Content-Type': 'image/jpeg',
-                                'Access-Control-Allow-Origin': '*',
-                                'Access-Control-Allow-Methods': 'GET',
-                                'Access-Control-Allow-Headers' : 'Content-Type',
-                            },
-                            body: buffer.toString('base64'),
-                            isBase64Encoded: true,
-                            breed,
-                        };
-                    });
-                } else {
-                    throw new Error(`Dog.CEO did not return JPEG file from URL ${imageUrl}`);
-                }
-            });
+        await fetch('https://dog.ceo/api/breeds/image/random').then((res) => {
+            if (!res.ok) throw new Error('Dog.CEO could not fetch URL for random dog image');
+
+            return res.json();
+        }).then(async (imageJson) => {
+            const response = await fetch(imageJson.message);
+
+            if (!response.ok) throw new Error(`Dog.CEO did not return JPEG file from URL ${imageJson.message} due to ${response.statusText}`);
+
+            breed = getBreedName(imageJson.message);
+
+            const file = createWriteStream(`${randomFilename}.jpg`);
+            const dogBuffer = await response.arrayBuffer().then((buffer) => buffer);
+            file.end(dogBuffer);
+
+            const params = {
+                Bucket: bucketName,
+                Key: `${randomFilename}.jpg`,
+                Body: file,
+                ContentType: response.headers['content-type'],
+                ContentLength: response.headers['content-length']
+            };
+
+            const uploadPromise = S3.upload(params).promise();
+
+            const data = await uploadPromise;
+
+            lambdaResponse = {
+                statusCode: 200,
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ breed, randomDogUrl: `${data.Location}` }),
+                isBase64Encoded: false,
+            };
         });
+
         return lambdaResponse;
     } catch (error) {
         console.error('Error fetching image:', error);
