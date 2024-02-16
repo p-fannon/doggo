@@ -1,7 +1,8 @@
 import fetch from 'node-fetch';
 import { PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
-import { createWriteStream } from 'node:fs';
+import fs from 'fs';
 import { randomUUID } from 'node:crypto';
+import { fileTypeFromBuffer } from 'file-type';
 
 const client = new S3Client({});
 
@@ -46,33 +47,42 @@ export const handler = async (event) => {
 
             breed = getBreedName(imageJson.message);
 
-            const file = createWriteStream(`/tmp/${randomFilename}.jpg`);
             const dogBuffer = await response.arrayBuffer().then((buffer) => {
-                const data = new Uint8Array(buffer);
+                const data = Buffer.from(buffer);
                 return data;
             });
-            file.end(dogBuffer);
+            const fileType = await fileTypeFromBuffer(dogBuffer);
+            if (fileType.ext) {
+                const outputFileName = `/tmp/${randomFilename}.${fileType.ext}`;
+                fs.createWriteStream(outputFileName).write(dogBuffer);
+            } else {
+                throw new Error('Could not determine an appropriate file type')
+            }
 
-            const params = {
-                Bucket: bucketName,
-                Key: `${randomFilename}.jpg`,
-                Body: file,
-                ContentType: response.headers['content-type'],
-                ContentLength: response.headers['content-length']
-            };
-
-            const command = new PutObjectCommand(params);
-
-            const uploadPromise = await client.send(command);
-
-            lambdaResponse = {
-                statusCode: 200,
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ breed, randomDogUrl: `${uploadPromise.Location}` }),
-                isBase64Encoded: false,
-            };
+            fs.readFile(`/tmp/${randomFilename}.${fileType.ext}`, async (err, data) => {
+                if (err) throw new Error('Error reading newly fetched dog picture');
+                
+                const params = {
+                    Bucket: bucketName,
+                    Key: `${randomFilename}.jpg`,
+                    Body: data,
+                    ContentType: response.headers['content-type'],
+                    ContentLength: response.headers['content-length']
+                };
+    
+                const command = new PutObjectCommand(params);
+    
+                const uploadPromise = await client.send(command);
+    
+                lambdaResponse = {
+                    statusCode: 200,
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ breed, randomDogUrl: `${uploadPromise.Location}` }),
+                    isBase64Encoded: false,
+                };
+            });
         });
 
         return lambdaResponse;

@@ -4,6 +4,7 @@
     "private": true,
     "dependencies": {
         "aws-sdk": "^2.1559.0",
+        "file-type": "^19.0.0",
         "node-fetch": "^3.3.2"
     }
 }
