@@ -3,13 +3,17 @@
 exports[`Footer renders successfully 1`] = `
 <div>
   <footer
-    class="flex flex-nowrap justify-end justify-self-end min-w-full pr-2 py-1 border-t-2 border-slate-200 dark:border-slate-500 z-50"
+    class="z-50 fixed inset-x-0 bottom-0"
   >
-    <p
-      class="chakra-text text-xs font-footer css-0"
+    <div
+      class="flex flex-nowrap justify-end justify-self-end min-w-full pr-2 py-1 border-t-2 border-slate-200 dark:border-slate-500"
     >
-      ⚡ Powered by Dog.CEO & AWS
-    </p>
+      <p
+        class="chakra-text text-xs font-footer css-0"
+      >
+        ⚡ Powered by Dog.CEO & AWS
+      </p>
+    </div>
   </footer>
 </div>
 `;

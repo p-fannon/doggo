@@ -3,7 +3,7 @@
 exports[`HomePage renders successfully 1`] = `
 <div>
   <div
-    class="flex flex-col mt-6 justify-center items-center"
+    class="flex flex-col grow items-center justify-center my-6 mx-2 gap-y-4"
   >
     <button
       class="chakra-button font-body css-4xx2wk"

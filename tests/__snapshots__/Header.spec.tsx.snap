@@ -3,13 +3,17 @@
 exports[`Document renders successfully 1`] = `
 <div>
   <header
-    class="flex flex-nowrap justify-start justify-self-start min-w-full pl-3 py-1 shadow-md border-b-2 border-cyan-500 dark:border-slate-200 z-50"
+    class="z-50 sticky top-0"
   >
-    <h2
-      class="chakra-heading text-xl font-bold font-heading css-0"
+    <div
+      class="flex flex-nowrap justify-start justify-self-start min-w-full pl-3 py-1 shadow-md border-b-2 border-cyan-500 dark:border-slate-200"
     >
-      🦴 Doggo
-    </h2>
+      <h2
+        class="chakra-heading text-xl font-bold font-heading css-0"
+      >
+        🦴 Doggo
+      </h2>
+    </div>
   </header>
 </div>
 `;
