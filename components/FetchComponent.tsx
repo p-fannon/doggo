@@ -35,12 +35,10 @@ export default function FetchComponent() {
     }
 
     return (
-        <div className="overflow-y-auto flex flex-col mt-6 mx-2 gap-y-4 justify-center items-center">
+        <div className="flex flex-col grow items-center justify-center my-6 mx-2 gap-y-4">
             <FetchButton onClick={onClick} isLoading={isLoading} />
-            <div className="font-body">
-                {error && <Text className='text-red-600'>{error}</Text>}
-                {breed && <Text>{`A wild ${breed} appeared!`}</Text>}
-            </div>
+            {error && <Text className='text-red-600'>{error}</Text>}
+            {breed && <Text>{`A wild ${breed} appeared!`}</Text>}
             {imageData && <FetchImage randomDogUrl={imageData} breed={breed} />}
         </div>
     )

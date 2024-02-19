@@ -3,9 +3,9 @@ import Header from "./Header";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
     return (
-        <main className="flex min-h-screen flex-col font-sans">
+        <main className="flex min-h-screen flex-col justify-between">
             <Header />
-            <div className="justify-start grow">{children}</div>
+                <div className="flex flex-col grow overflow-y-scroll z-0 font-body">{children}</div>
             <Footer />
         </main>
     )
