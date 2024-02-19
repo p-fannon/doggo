@@ -35,8 +35,8 @@ export const handler = async (event) => {
     try {
         let lambdaResponse = {};
         let breed = '';
-        const bucketName = event.bucketName;
-        if (!bucketName) throw new Error(`event passed unexpected bucketname ${bucketName}`);
+        const bucketName = event['queryStringParameters']['bucketName'];
+        if (!bucketName) throw new Error(`event passed unexpected bucket name ${bucketName}`);
         const randomFilename = randomUUID().toString();
 
         await fetch('https://dog.ceo/api/breeds/image/random').then((res) => {
@@ -74,6 +74,7 @@ export const handler = async (event) => {
                     statusCode: 200,
                     headers: {
                         'Content-Type': 'application/json',
+                        'Access-Control-Allow-Origin': "*"
                     },
                     body: JSON.stringify({ breed, randomDogUrl: `https://${bucketName}.s3.amazonaws.com/${imageKey}` }),
                     isBase64Encoded: false,
