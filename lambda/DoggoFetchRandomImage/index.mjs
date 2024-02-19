@@ -1,17 +1,20 @@
 import fetch from 'node-fetch';
 import { PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
-import fs from 'fs';
 import { randomUUID } from 'node:crypto';
 import { fileTypeFromBuffer } from 'file-type';
+import credentials from "./credentials.json" with { type: "json" };
 
-const client = new S3Client({});
+const client = new S3Client({
+    region: 'us-east-1',
+    credentials: credentials
+});
 
 const getBreedName = (message) => {
     let breed = '';
     const imageUrlSplit = message.split('/');
     if (imageUrlSplit.length > 5) {
         if (imageUrlSplit[4] == 'mix') {
-            breed = imageUrlSplit[5].split('.')[0].concat(' (Mix)');
+            breed = 'Mix';
         } else {
             const breedCandidate = imageUrlSplit[4];
             const breedCandidateSplit = breedCandidate.split('-');
@@ -53,9 +56,11 @@ export const handler = async (event) => {
             });
             const fileType = await fileTypeFromBuffer(dogBuffer);
             if (fileType.ext) {
+                const imageKey = `${breed}/${randomFilename}.${fileType.ext}`;
+
                 const params = {
                     Bucket: bucketName,
-                    Key: `${randomFilename}.${fileType.ext}`,
+                    Key: imageKey,
                     Body: dogBuffer,
                     ContentType: response.headers['content-type'],
                     ContentLength: response.headers['content-length']
@@ -63,14 +68,14 @@ export const handler = async (event) => {
     
                 const command = new PutObjectCommand(params);
     
-                const uploadPromise = await client.send(command);
-    
+                await client.send(command);
+
                 lambdaResponse = {
                     statusCode: 200,
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({ breed, randomDogUrl: `${uploadPromise.Location}` }),
+                    body: JSON.stringify({ breed, randomDogUrl: `https://${bucketName}.s3.amazonaws.com/${imageKey}` }),
                     isBase64Encoded: false,
                 };
             } else {

@@ -38,3 +38,4 @@ next-env.d.ts
 # lambdas
 /lambda/*/node_modules
 /lambda/*/*.zip
+/lambda/*/credentials.json
