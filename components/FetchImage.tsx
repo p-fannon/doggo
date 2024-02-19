@@ -1,17 +1,17 @@
 import React from 'react'
 import Image from 'next/image'
+import { DoggoRandomImageResponse } from './FetchComponent'
 
-type FetchImageType = {
-    imageData: ArrayBuffer,
-    breed: string
-}
-
-export default function FetchImage({ imageData, breed }: FetchImageType) {
+export default function FetchImage({ randomDogUrl, breed }: DoggoRandomImageResponse) {
     return (
-        <div className="relative h-20">
+        <div className="relative size-64 md:size-96 lg:size-[32rem] xl:size-[40rem]">
             <Image
                 fill={true}
-                src={`data:image/jpeg;base64,${imageData}`}
+                src={randomDogUrl}
+                sizes="100vw"
+                style={{
+                    objectFit: 'contain'
+                }}
                 alt={breed ? breed : 'No image description available'}
             />
         </div>
