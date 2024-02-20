@@ -1,8 +1,9 @@
 import React, { useState } from 'react'
-import axios from 'axios'
 import FetchButton from './FetchButton'
 import { Text } from '@chakra-ui/react'
 import FetchImage from './FetchImage'
+import { AxiosInstance } from 'axios'
+import useClient from '../hooks/useClient'
 
 export type DoggoRandomImageResponse = {
     breed: string
@@ -14,6 +15,7 @@ export default function FetchComponent() {
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [error, setError] = useState<string>('')
     const [breed, setBreed] = useState<string>('')
+    const axios: AxiosInstance = useClient()
 
     const onClick = async () => {
         setIsLoading(true)
