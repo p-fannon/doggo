@@ -33,7 +33,7 @@ export default function FetchComponent() {
     }
 
     return (
-        <div className="flex flex-col grow items-center justify-center my-6 mx-2 gap-y-4">
+        <div className="flex flex-col grow items-center justify-center my-8 mx-2 gap-y-4">
             <FetchButton onClick={onClick} isLoading={isLoading} />
             {error && <Text className='text-red-600'>{error}</Text>}
             {breed && <Text>{`A wild ${breed} appeared!`}</Text>}
