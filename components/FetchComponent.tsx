@@ -21,14 +21,7 @@ export default function FetchComponent() {
         setIsLoading(true)
         setError('')
         try {
-            await axios.get(`https://${process.env.NEXT_PUBLIC_API_GATEWAY_DOMAIN}/FetchRandomDog`, {
-                params: {
-                    bucketName: process.env.NEXT_PUBLIC_S3_BUCKET_NAME
-                },
-                headers: {
-                    'x-api-key': `${process.env.NEXT_PUBLIC_API_KEY}`
-                }
-            })
+            await axios.get(`https://${process.env.NEXT_PUBLIC_API_GATEWAY_DOMAIN}/FetchRandomDog`)
             .then((apiResponse) => {
                 const { breed, randomDogUrl }: DoggoRandomImageResponse = apiResponse.data
                 setImageData(randomDogUrl)
