@@ -7,7 +7,6 @@ export default function Document() {
         <link rel='manifest' href='/manifest.webmanifest' />
         <link rel='apple-touch-icon' href='/apple-touch-icon.png' />
         <link rel='shortcut icon' href='/favicon.ico' />
-        <meta name='theme-color' content='#ffccdc' />
       </Head>
       <body>
         <Main />
