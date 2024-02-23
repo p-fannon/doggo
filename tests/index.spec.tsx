@@ -19,8 +19,8 @@ describe('HomePage', () => {
     beforeEach(() => {
         axios.get = jest.fn().mockResolvedValue({
             data: {
-                breed: 'Doggo',
-                randomDogUrl: 'https://images.dog.ceo/breeds/poodle-toy/n02113624_8951.jpg'
+                breed: 'Australian-Terrier',
+                randomDogUrl: 'https://images.dog.ceo/breeds/terrier-australian/n02096294_1553.jpg'
             }
         })
     })
@@ -47,8 +47,8 @@ describe('HomePage', () => {
 
         await waitFor(() => {
             const imageContainer = getByTestId('image-container')
-            expect(getByText('A wild Doggo appeared!')).toBeInTheDocument()
-            expect(getByAltText('Doggo')).toBeInTheDocument()
+            expect(getByText('A wild Australian Terrier appeared!')).toBeInTheDocument()
+            expect(getByAltText('Australian Terrier')).toBeInTheDocument()
             expect(imageContainer).toHaveClass('relative size-64 md:size-96 lg:size-[32rem] xl:size-[40rem]')
             expect(axios.get).toHaveBeenCalledWith(`https://${process.env.NEXT_PUBLIC_API_GATEWAY_DOMAIN}/FetchRandomDog`, config)
         })
