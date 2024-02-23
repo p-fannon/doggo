@@ -25,10 +25,6 @@ describe('HomePage', () => {
         })
     })
 
-    afterEach(() => {
-        jest.restoreAllMocks()
-    })
-
     it('renders successfully', () => {
         const { container } = render(<HomePage />)
 
