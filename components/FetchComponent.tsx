@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import FetchButton from './FetchButton'
 import { Text } from '@chakra-ui/react'
 import FetchImage from './FetchImage'
-import axios from 'axios'
+import axios, { AxiosResponse } from 'axios'
 
 export type DoggoRandomImageResponse = {
     breed: string
@@ -30,10 +30,10 @@ export default function FetchComponent() {
         setError('')
         try {
             await axios.get(`https://${process.env.NEXT_PUBLIC_API_GATEWAY_DOMAIN}/FetchRandomDog`, config)
-            .then((apiResponse) => {
+            .then((apiResponse: AxiosResponse<any, any>) => {
                 const { breed, randomDogUrl }: DoggoRandomImageResponse = apiResponse.data
                 setImageData(randomDogUrl)
-                setBreed(breed)
+                setBreed(breed.split('-').join(' '))
             })
         } catch (e) {
             setError('Could not fetch a dog')

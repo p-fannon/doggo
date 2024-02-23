@@ -21,7 +21,7 @@ const getBreedName = (message) => {
             if (breedCandidateSplit.length == 1) {
                 breed = `${breedCandidateSplit[0].charAt(0).toUpperCase()}${breedCandidateSplit[0].substring(1, breedCandidateSplit[0].length)}`;
             } else {
-                breed = breedCandidateSplit.map((input) => `${input.charAt(0).toUpperCase()}${input.substring(1, input.length)}`).join('-');
+                breed = breedCandidateSplit.map((input) => `${input.charAt(0).toUpperCase()}${input.substring(1, input.length)}`).reverse().join('-');
             }
         }
     } else {
