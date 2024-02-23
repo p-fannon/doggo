@@ -26,7 +26,7 @@ export default function FetchImage({ randomDogUrl, breed }: DoggoRandomImageResp
     const { width, height }: WindowSizeType = useWindowSize();
 
     return (
-        <div className="relative size-64 md:size-96 lg:size-[32rem] xl:size-[40rem]">
+        <div data-testid={'image-container'} className="relative size-64 md:size-96 lg:size-[32rem] xl:size-[40rem]">
             <Image
                 fill={true}
                 src={randomDogUrl}

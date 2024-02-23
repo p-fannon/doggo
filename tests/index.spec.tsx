@@ -39,15 +39,34 @@ describe('HomePage', () => {
     })
 
     it('makes a network call and updates the view after pressing fetch button', async () => {
-        const {getByRole, getByText, getByAltText} = render(<HomePage />)
+        const {getByRole, getByText, getByAltText, getByTestId} = render(<HomePage />)
 
         const fetchButton = getByRole('button')
 
         await fireEvent.click(fetchButton);
 
         await waitFor(() => {
+            const imageContainer = getByTestId('image-container')
             expect(getByText('A wild Doggo appeared!')).toBeInTheDocument()
             expect(getByAltText('Doggo')).toBeInTheDocument()
+            expect(imageContainer).toHaveClass('relative size-64 md:size-96 lg:size-[32rem] xl:size-[40rem]')
+            expect(axios.get).toHaveBeenCalledWith(`https://${process.env.NEXT_PUBLIC_API_GATEWAY_DOMAIN}/FetchRandomDog`, config)
+        })
+    })
+
+    it.each([400, 500])('returns an error state on a failed request with %s status', async (status) => {
+        axios.get = jest.fn().mockRejectedValue({
+            status
+        })
+
+        const {getByRole, getByText} = render(<HomePage />)
+
+        const fetchButton = getByRole('button')
+
+        await fireEvent.click(fetchButton);
+
+        await waitFor(() => {
+            expect(getByText('Could not fetch a dog')).toBeInTheDocument()
             expect(axios.get).toHaveBeenCalledWith(`https://${process.env.NEXT_PUBLIC_API_GATEWAY_DOMAIN}/FetchRandomDog`, config)
         })
     })
