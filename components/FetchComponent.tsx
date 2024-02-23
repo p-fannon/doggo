@@ -29,17 +29,13 @@ export default function FetchComponent() {
         setIsLoading(true)
         setError('')
         try {
-            console.log('making request')
-            console.log(axios)
             await axios.get(`https://${process.env.NEXT_PUBLIC_API_GATEWAY_DOMAIN}/FetchRandomDog`, config)
             .then((apiResponse) => {
-                console.log('receiving response')
                 const { breed, randomDogUrl }: DoggoRandomImageResponse = apiResponse.data
                 setImageData(randomDogUrl)
                 setBreed(breed)
             })
         } catch (e) {
-            console.log(e);
             setError('Could not fetch a dog')
         } finally { setIsLoading(false) }
     }
