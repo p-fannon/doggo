@@ -2,12 +2,21 @@ import React, { useState } from 'react'
 import FetchButton from './FetchButton'
 import { Text } from '@chakra-ui/react'
 import FetchImage from './FetchImage'
-import { AxiosInstance } from 'axios'
-import useClient from '../hooks/useClient'
+import axios from 'axios'
 
 export type DoggoRandomImageResponse = {
     breed: string
     randomDogUrl: string
+}
+
+const config = {
+    baseURL: `https://${process.env.NEXT_PUBLIC_API_GATEWAY_DOMAIN}/FetchRandomDog`,
+    params: {
+        bucketName: process.env.NEXT_PUBLIC_S3_BUCKET_NAME
+    },
+    headers: {
+        'x-api-key': `${process.env.NEXT_PUBLIC_API_KEY}`
+    }
 }
 
 export default function FetchComponent() {
@@ -15,19 +24,22 @@ export default function FetchComponent() {
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [error, setError] = useState<string>('')
     const [breed, setBreed] = useState<string>('')
-    const axios: AxiosInstance = useClient()
 
     const onClick = async () => {
         setIsLoading(true)
         setError('')
         try {
-            await axios.get(`https://${process.env.NEXT_PUBLIC_API_GATEWAY_DOMAIN}/FetchRandomDog`)
+            console.log('making request')
+            console.log(axios)
+            await axios.get(`https://${process.env.NEXT_PUBLIC_API_GATEWAY_DOMAIN}/FetchRandomDog`, config)
             .then((apiResponse) => {
+                console.log('receiving response')
                 const { breed, randomDogUrl }: DoggoRandomImageResponse = apiResponse.data
                 setImageData(randomDogUrl)
                 setBreed(breed)
             })
         } catch (e) {
+            console.log(e);
             setError('Could not fetch a dog')
         } finally { setIsLoading(false) }
     }
